@@ -33,10 +33,11 @@ pipeline {
             }
         }
 
-        stage('4. Run Container') {
+        stage('4. Pull from Docker Hub & Run Container') {
             steps {
-                echo '🚀 Deploying container on port 8090...'
-                // Remove old container if running, then run fresh
+                echo '📥 Pulling latest verified image from Docker Hub...'
+                bat 'docker pull %IMAGE_NAME%:latest'
+                echo '🚀 Deploying container on port 8090 from pulled image...'
                 bat 'docker rm -f hello-app || exit 0'
                 bat 'docker run -d --name hello-app -p 8090:80 %IMAGE_NAME%:latest'
             }
